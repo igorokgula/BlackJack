@@ -49,6 +49,9 @@ public final class TelnetClient {
                         System.out.println("Not correct!\r\n");
                         scanner.nextLine();
                     }
+                    if (!ch.isOpen()) {
+                        System.exit(0);
+                    }
                 }
                 ch.writeAndFlush(bet + "\r\n");
 

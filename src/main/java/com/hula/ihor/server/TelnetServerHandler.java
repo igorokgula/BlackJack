@@ -21,10 +21,11 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         user.setChannel(ctx.channel());
         try {
-            Table.getInstance().addUser(user);
-            ctx.writeAndFlush("Hello!!! \r\n");
+            int number = Table.getInstance().addUser(user);
+            ctx.writeAndFlush("Hello!!! Your number = " + number + "\r\n");
         } catch (TableIsFullException e) {
-            ctx.writeAndFlush("Sorry, but the table is full!\r\n");
+            ctx.writeAndFlush("Sorry, but the table is full! Type something...\r\n");
+            ctx.channel().close();
         }
         super.channelActive(ctx);
     }

@@ -48,8 +48,14 @@ public class Table {
         return instance;
     }
 
-    public synchronized void addUser(User user) throws TableIsFullException {
-        findFreePlace().setUser(user);
+    public synchronized int addUser(User user) throws TableIsFullException {
+        Place freePlace = findFreePlace();
+        if (freePlace != null) {
+            freePlace.setUser(user);
+        } else {
+            throw new TableIsFullException();
+        }
+        return freePlace.getNumber();
     }
 
     public synchronized void removeUser(User user) {
@@ -60,12 +66,11 @@ public class Table {
                 return;
             }
         }
-        throw new UserNotFoundException();
     }
 
     private Place findPlaceOfUser(User user) {
         for (Place p : places) {
-            if (p.getUser().equals(user)) {
+            if (p.getUser() != null && p.getUser().equals(user)) {
                 return p;
             }
         }
