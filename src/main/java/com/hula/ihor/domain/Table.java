@@ -22,8 +22,8 @@ public class Table {
     private static final int PLACES_MAX_COUNT = 5;
     private static final int COUNT_DEFAULT_MOVES = 2;
     private static final int MIN_DEALER_VALUE = 17;
-    private static int TIME_FOR_MAKING_BET = 20000;
-    private static int TIME_FOR_MAKING_ACTION = 20000;
+    private static final int TIME_FOR_MAKING_BET = 20000;
+    private static final int TIME_FOR_MAKING_ACTION = 20000;
 
     private static int casinoMoney = 1000000;
 
@@ -124,19 +124,19 @@ public class Table {
         StringBuffer response = new StringBuffer();
         try {
             if (UserAction.fromString(request) == UserAction.HIT) {
-                Table.getInstance().setCardToUser(user);
+                setCardToUser(user);
                 response.append(user.getCards().get(user.getCards().size() - 1) + "\r\n");
             } else if (UserAction.fromString(request) == UserAction.STAND) {
                 response.append(MOVE_IS_DONE_MESSAGE);
                 user.setIsMoveDone(true);
-                Table.getInstance().notifyUserMoveIsDone();
+                notifyUserMoveIsDone();
             } else if (UserAction.fromString(request) == UserAction.DOUBLE){
                 user.setBet(user.getBet() * 2);
-                Table.getInstance().setCardToUser(user);
+                setCardToUser(user);
                 user.setIsMoveDone(true);
                 response.append(user.getCards().get(user.getCards().size() - 1) + "\r\n");
                 response.append(MOVE_IS_DONE_MESSAGE);
-                Table.getInstance().notifyUserMoveIsDone();
+                notifyUserMoveIsDone();
             }
         } catch (NoSuchElementException e) {
             e.printStackTrace();
